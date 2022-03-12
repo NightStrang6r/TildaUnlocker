@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener(onMessage);
 chrome.runtime.sendMessage({greeting: "getSettings"}, (settings) => {main(settings.settings)});
 
 function main(settings) {
-    if(settings.unlockBlocks) {
+    if(settings && settings.unlockBlocks) {
         service();
     }
 }
@@ -28,28 +28,31 @@ function service() {
 }
 
 function unlockBlocks(toUnlock = true) {
-    let libraryEl = document.querySelectorAll(".tp-library__tpl-body");
+    try {
+        let libraryEl = document.querySelectorAll(".tp-library__tpl-body");
     
-    if(toUnlock) {
-        libraryEl.forEach(el => {
-            if(el.dataset.tplLocked == "yes") {
-                el.dataset.tplLocked = "no";
-                el.querySelector(".tp-library__tpl-wrapper").style.opacity = "1";
-                el.querySelector(".tp-library__tpl-lock").style.display = "none";
-            }
-        });
-        console.log(`Blocks unlocked`);
-    } else {
-        libraryEl.forEach(el => {
-            if(el.dataset.tplLocked == "no") {
-                el.dataset.tplLocked = "yes";
-                el.querySelector(".tp-library__tpl-wrapper").style.opacity = "0.5";
-                el.querySelector(".tp-library__tpl-lock").style.display = "";
-            }
-        });
-        console.log(`Blocks locked`);
+        if(toUnlock) {
+            libraryEl.forEach(el => {
+                if(el.dataset.tplLocked == "yes") {
+                    el.dataset.tplLocked = "no";
+                    el.querySelector(".tp-library__tpl-wrapper").style.opacity = "1";
+                    el.querySelector(".tp-library__tpl-lock").style.display = "none";
+                }
+            });
+            console.log(`Blocks unlocked`);
+        } else {
+            libraryEl.forEach(el => {
+                if(el.dataset.tplLocked == "no") {
+                    el.dataset.tplLocked = "yes";
+                    el.querySelector(".tp-library__tpl-wrapper").style.opacity = "0.5";
+                    el.querySelector(".tp-library__tpl-lock").style.display = "";
+                }
+            });
+            console.log(`Blocks locked`);
+        }
+    } catch(err) {
+        console.log(`Ошибка при разблокировке блоков: ${err}`);
     }
-    
 }
 
 function onMessage(request, sender, sendResponse) {

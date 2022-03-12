@@ -9,9 +9,14 @@ function onMessage(request, sender, sendResponse) {
         }
 
         if(settings.unlockBlocks != undefined) {
-            chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-                const tabId = tabs[0].id;
-                chrome.tabs.sendMessage(tabId, {greeting: "setUnlockBlocks", state: settings.unlockBlocks});
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                try {
+                    const tabId = tabs[0].id;
+                    chrome.tabs.sendMessage(tabId, {greeting: "setUnlockBlocks", state: settings.unlockBlocks});
+                } catch (err) {
+                    console.log(`Ошибка при отправке сообщения на вкладку: ${err}`);
+                }
+                
             });
         }
 
@@ -26,6 +31,13 @@ function onMessage(request, sender, sendResponse) {
 
     if (request.greeting == "getSettings") {
         chrome.storage.sync.get('settings', function(result) {
+            let settings;
+            if(!result.settings) {
+                settings = {settings: {}};
+            } else {
+                settings = {settings: result.settings};
+            }
+
             sendResponse({settings: result.settings});
             console.log("Settings sent:");
             console.log(result.settings);

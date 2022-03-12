@@ -1,16 +1,18 @@
 console.log('Popup.js');
 
 const checkboxes = document.getElementsByClassName("custom-checkbox");
-let settings = new Object;
 
 restoreSettings();
-for(let i = 0; i < checkboxes.length; i++){
+for(let i = 0; i < checkboxes.length; i++) {
     checkboxes[i].addEventListener("input", saveSettings);
 }
 
 function saveSettings(el) {
-    for(let i = 0; i < checkboxes.length; i++){
-        settings[checkboxes[i].name] = checkboxes[i].checked;
+    let settings = {};
+
+    for(let i = 0; i < checkboxes.length; i++) {
+        console.log(settings);
+        settings[`${checkboxes[i].name}`] = checkboxes[i].checked;
     }
 
     chrome.runtime.sendMessage({greeting: "saveSettings", settings: settings});
@@ -19,14 +21,17 @@ function saveSettings(el) {
 function restoreSettings(){
     chrome.runtime.sendMessage({greeting: "getSettings"},
         function (response) {
-            console.log(response);
-            settings = response.settings;
-            for(let i = 0; i < checkboxes.length; i++){
-                if(settings[`${checkboxes[i].name}`] == "true" || settings[`${checkboxes[i].name}`] == true){
-                    checkboxes[i].checked = true;
-                } else {
-                    checkboxes[i].checked = false;
+            try {
+                let settings = response.settings;
+                for(let i = 0; i < checkboxes.length; i++){
+                    if(settings[`${checkboxes[i].name}`] == "true" || settings[`${checkboxes[i].name}`] == true){
+                        checkboxes[i].checked = true;
+                    } else {
+                        checkboxes[i].checked = false;
+                    }
                 }
+            } catch (err) {
+                console.log(`Ошибка при получении настроек: ${err}`);
             }
         }
     );
