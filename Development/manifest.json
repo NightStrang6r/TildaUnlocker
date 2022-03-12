@@ -1,0 +1,34 @@
+{
+    "manifest_version": 3,
+    "name": "Tilda Unlocker",
+    "author": "NightStranger",
+    "description": "Добавляет новые возможности редактора Tilda для бесплатных тарифов",
+    "version": "1.0.0",
+    "icons": {"64": "logo.png"},
+    "action": {
+        "default_icon": "logo.png",
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://tilda.cc/",
+                "https://tilda.cc/*"
+            ],
+            "js": [
+                "main.js"
+            ]
+        }
+    ],
+    "permissions": [
+        "storage",
+        "tabs"
+    ],
+    "content_security_policy": {
+        "script-src": "self",
+        "object-src": "self"
+    }
+}

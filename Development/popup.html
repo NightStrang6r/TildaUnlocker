@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<!--Начало первого блока объяснения кода-->
+<head>
+    <meta charset="utf-8">
+    <title>XDL</title>
+    <!--ссылаемся на шрифты, используемые в документе-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    <!--здесь мы ссылаемся на стили, которые будем использовать в документе, а именно стиль иконок-->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+        crossorigin="anonymous">
+    <!--начало блока со стилями для страницы-->
+    <style>
+    /* Модальная структура документа */
+    /*общие настройки для всего документа*/
+    html,
+    body {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        margin: 0;
+        min-height: 180px;
+        padding: 0;
+        width: 380px;
+    }
+    /*задаём настройки для заголовков первого уровня*/
+    h1 {
+        font-family: 'Menlo', monospace;
+        font-size: 22px;
+        font-weight: 400;
+        margin: 0;
+        color: #2f5876;
+    }
+    a:link,
+    a:visited {
+        color: #000000;
+        outline: 0;
+        text-decoration: none;
+    }
+
+    /*задаём ширину картинки*/
+    img {
+        width: 30px; /*ширина изображений*/
+    }
+
+    .modal-header {
+        align-items: center; /*выравнивание элементов по центру*/
+        border-bottom: 0.5px solid #dadada; /*свойства нижней разделительной линии*/
+        height: 50px;
+    }
+
+    .modal-content {
+        padding: 0 22px; /*отступы сверху и снизу, сверху и слева*/
+    }
+
+    .modal-icons {
+        border-top: 0.5px solid #dadada; /*свойства верхней разделительной линии*/
+        height: 50px;
+        width: 100%;
+    }
+
+    .no-view {
+        display: none;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .login-button {
+        cursor: pointer;
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 25px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    .login-button:hover {
+        background-color: #3d9140;
+    }
+
+    .logo {
+        cursor: default;
+        padding: 16px; /*отступы со всех сторон*/
+    }
+
+    .logo-icon {
+        vertical-align: text-bottom; /*выравнивание по нижней части текста*/
+    }
+
+    .header-text {
+        cursor: default;
+        color: #444;
+        font-size: 18px;
+    }
+
+    .flex-container {
+        display: flex; /*отображает контейнер в виде блочного элемента*/
+        justify-content: space-between; /*равномерное выравнивание элементов*/
+        padding: 10px 22px;
+    }
+
+    /*задаём настройки для контейнеров с иконками*/
+    .flex {
+        opacity: 1; /*параметр непрозрачности иконок*/
+        width: 120px;
+    }
+
+    .flex:hover {
+        opacity: 0.4; /*уровень непрозрачности при наведении курсора на элемент*/
+    }
+
+    .flex .fa {
+        font-size: 40px;
+        color: #2f5876;
+    }
+
+    /* для элемента input c type="checkbox" */
+    .custom-checkbox {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+    }
+
+    /* для элемента label, связанного с .custom-checkbox */
+    .custom-checkbox+label {
+        display: inline-flex;
+        align-items: center;
+        user-select: none;
+    }
+
+    /* создание в label псевдоэлемента before со следующими стилями */
+    .custom-checkbox+label::before {
+        content: '';
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        flex-shrink: 0;
+        flex-grow: 0;
+        border: 1px solid #adb5bd;
+        border-radius: 0.25em;
+        margin-right: 0.5em;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 50% 50%;
+    }
+
+    /* стили при наведении курсора на checkbox */
+    .custom-checkbox:not(:disabled):not(:checked)+label:hover::before {
+        border-color: #b3d7ff;
+    }
+
+    /* стили для активного чекбокса (при нажатии на него) */
+    .custom-checkbox:not(:disabled):active+label::before {
+        background-color: #b3d7ff;
+        border-color: #b3d7ff;
+    }
+
+    /* стили для чекбокса, находящегося в фокусе */
+    .custom-checkbox:focus+label::before {
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    /* стили для чекбокса, находящегося в фокусе и не находящегося в состоянии checked */
+    .custom-checkbox:focus:not(:checked)+label::before {
+        border-color: #80bdff;
+    }
+
+    /* стили для чекбокса, находящегося в состоянии checked */
+    .custom-checkbox:checked+label::before {
+        border-color: #0b76ef;
+        background-color: #0b76ef;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+    }
+
+    /* стили для чекбокса, находящегося в состоянии disabled */
+    .custom-checkbox:disabled+label::before {
+        background-color: #e9ecef;
+    }
+
+    .checkbox {
+        margin-bottom: 0.5em;
+    }
+
+    .paragraph {
+        font-weight: bold;
+    }
+
+    /* Dropdown */
+
+    .right {
+        clear:left;
+        text-align: right;
+    }
+
+    .dropbtn {
+        display: inline;
+        width: 100%;
+        position: absolute;
+        text-align: right;
+        right: 10px;
+    }
+
+    #menu {
+        cursor: pointer;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        margin-left: 0px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #ffffff;
+        font-size: 14px;
+        min-width: 200px;
+        overflow: auto;
+        box-shadow: 0px 8px 10px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        padding: 5px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown a:hover {background-color: #ddd;}
+
+    .show {
+        display: block;
+    }
+
+    /* Text Input */
+    .text-field {
+        margin-bottom: 1rem;
+    }
+
+    .text-field__label {
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .text-field__input {
+        display: block;
+        width: 300px;
+        height: 40px;
+        padding-left: 0.375rem 0.75rem;
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #bdbdbd;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .text-field__input[type="search"]::-webkit-search-decoration,
+    .text-field__input[type="search"]::-webkit-search-cancel-button,
+    .text-field__input[type="search"]::-webkit-search-results-button,
+    .text-field__input[type="search"]::-webkit-search-results-decoration {
+        -webkit-appearance: none;
+    }
+
+    .text-field__input::placeholder {
+        color: #212529;
+        opacity: 0.4;
+    }
+
+    .text-field__input:focus {
+        color: #212529;
+        background-color: #fff;
+        border-color: #bdbdbd;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(158, 158, 158, 0.25);
+    }
+
+    .text-field__input:disabled,
+    .text-field__input[readonly] {
+        background-color: #f5f5f5;
+        opacity: 1;
+    }
+
+    .text-field_floating-2 {
+        position: relative;
+    }
+
+    .text-field_floating-2 .text-field__input {
+        height: calc(2.5rem + 2px);
+        padding-left: 0.5rem;
+    }
+
+    .text-field_floating-2 .text-field__label {
+        position: absolute;
+        top: 50%;
+        left: 0.3125rem;
+        display: flex;
+        transform: translateY(-50%);
+        pointer-events: none;
+        border: none;
+        background-color: #fff;
+        color: #757575;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        transition: top 0.1s ease-in-out, scale 0.1s ease-in-out;
+    }
+
+    .text-field_floating-2 .text-field__input::-moz-placeholder {
+        color: transparent;
+    }
+
+    .text-field_floating-2 .text-field__input::placeholder {
+        color: transparent;
+    }
+
+    .text-field_floating-2 .text-field__input:focus~.text-field__label,
+    .text-field_floating-2 .text-field__input:not(:placeholder-shown)~.text-field__label {
+        top: 0;
+        transform: translateY(-50%) scale(0.75);
+    }
+
+    /* Arrow */
+    .arrow {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-top: 2px solid #1866c0;
+        border-right: 2px solid #1866c0;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
+    .arrow-top {
+        margin-top: 5px;
+        transform: rotate(-45deg);
+    }
+
+    .arrow-bottom {
+        margin-bottom: 5px;
+        transform: rotate(135deg); 
+    }
+
+    .arrow-left {
+        margin: 5px;
+        margin-top: 15px;
+        transform: rotate(-135deg); 
+    }
+    </style>
+    <!--конец объяснения блока со стилями-->
+</head>
+<!--объяснение тега <body>-->
+<body>
+    <!--контейнер, содержащий название, логотип и номер версии-->
+    <div class="modal-header">
+        <h1 class="logo">
+            <img class="logo-icon" src="logo.png">
+            <span>Tilda Unlocker</span>
+            <span class="header-text">v1.0</span>
+            <!--<div class="header-text dropbtn">
+                <span id="menu">Menu</span>
+            </div>-->
+            <span class="dropdown right">
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="#" id="website-menu">Сайт 🌍</a>
+                    <a href="#" id="telegram-menu">Телеграм ✈️</a>
+                    <a href="#" id="settings-menu">Настройки ⚙️</a>
+                    <a href="#" id="donation-menu">Поддержка проекта ❤️</a>
+                    <!-- <a href="#">Режим отладки 🐞</a> -->
+                </div>
+            </span>
+        </h1>
+    </div>
+    <!--Конец контейнера-->
+    <!--контейнер, содержащий настройки-->
+    <div id="main" class="modal-content">
+        <p class="paragraph">✨ Основные функции</p>
+        <div class="checkbox" style="margin-top: 0.5em;">
+            <input class="custom-checkbox" type="checkbox" id="unlockBlocks" name="unlockBlocks" value="">
+            <label for="unlockBlocks">Разблокировать блоки редактора</label>
+        </div>
+    </div>
+    <!--Конец контейнера-->
+    <script type="text/javascript" src="popup.js"></script>
+</body>
+
+</html>
