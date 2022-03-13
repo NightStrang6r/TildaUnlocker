@@ -12,11 +12,16 @@ function onMessage(request, sender, sendResponse) {
             chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
                 try {
                     const tabId = tabs[0].id;
-                    chrome.tabs.sendMessage(tabId, {greeting: "setUnlockBlocks", state: settings.unlockBlocks});
+                    chrome.tabs.sendMessage(tabId, {greeting: "setUnlockBlocks", state: settings.unlockBlocks}, (resp) => {
+                        const lastError = chrome.runtime.lastError;
+                        if(lastError) {
+                            console.log(lastError.message);
+                            return;
+                        }
+                    });
                 } catch (err) {
-                    console.log(`Ошибка при отправке сообщения на вкладку: ${err}`);
+                    console.log(`Error while sending message on the tab: ${err}`);
                 }
-                
             });
         }
 

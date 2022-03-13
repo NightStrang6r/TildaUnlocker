@@ -51,12 +51,13 @@ function unlockBlocks(toUnlock = true) {
             console.log(`Blocks locked`);
         }
     } catch(err) {
-        console.log(`Ошибка при разблокировке блоков: ${err}`);
+        console.log(`Error while blocks unlocking: ${err}`);
     }
 }
 
 function onMessage(request, sender, sendResponse) {
     if (request.greeting == "setUnlockBlocks") {
         unlockBlocks(request.state);
+        sendResponse({farewell: "OK"});
     }
 }

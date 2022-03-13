@@ -31,7 +31,7 @@ function restoreSettings(){
                     }
                 }
             } catch (err) {
-                console.log(`Ошибка при получении настроек: ${err}`);
+                console.log(`Error while getting settings: ${err}`);
             }
         }
     );
