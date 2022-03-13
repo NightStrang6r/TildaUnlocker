@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Tilda Unlocker",
     "author": "NightStranger",
-    "description": "Добавляет новые возможности редактора Tilda для бесплатных тарифов",
+    "description": "Unlocks unavailable Tilda editor blocks for free plans",
     "version": "1.0.0",
     "icons": {"64": "logo.png"},
     "action": {
