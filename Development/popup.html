@@ -18,7 +18,6 @@
         font-family: 'Open Sans', sans-serif;
         font-size: 14px;
         margin: 0;
-        min-height: 180px;
         padding: 0;
         width: 380px;
     }
@@ -361,7 +360,6 @@
     </style>
     <!--конец объяснения блока со стилями-->
 </head>
-<!--объяснение тега <body>-->
 <body>
     <!--контейнер, содержащий название, логотип и номер версии-->
     <div class="modal-header">
@@ -386,11 +384,12 @@
     <!--Конец контейнера-->
     <!--контейнер, содержащий настройки-->
     <div id="main" class="modal-content">
-        <p class="paragraph">✨ Основные функции</p>
-        <div class="checkbox" style="margin-top: 0.5em;">
-            <input class="custom-checkbox" type="checkbox" id="unlockBlocks" name="unlockBlocks" value="">
-            <label for="unlockBlocks">Разблокировать блоки редактора</label>
-        </div>
+        <p>
+            <div class="checkbox" style="margin-top: 0.5em;">
+                <input class="custom-checkbox" type="checkbox" id="unlockBlocks" name="unlockBlocks" value="">
+                <label for="unlockBlocks">Unlock editor blocks</label>
+            </div>
+        </p>
     </div>
     <!--Конец контейнера-->
     <script type="text/javascript" src="popup.js"></script>
